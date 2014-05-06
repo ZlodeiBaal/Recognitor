@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:orientation="horizontal"
+    >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" 
+    android:orientation="vertical"
+    android:layout_weight="1"
+    >
+    
+		    <org.opencv.samples.tutorial334565.Tutorial3View
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+    
+        android:id="@+id/tutorial3_activity_java_surface_view" />
+		    
+    </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent" 
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+   
+    >
+    
+    <ImageButton
+        android:id="@+id/buttonPhoto"
+        android:layout_width="50dp"
+        android:src="@drawable/photo"
+        android:layout_height="37dp"
+        android:layout_gravity="center_vertical"
+        android:onClick="buttonPhoto"
+        />
+    </LinearLayout>
+    
+
+</LinearLayout>

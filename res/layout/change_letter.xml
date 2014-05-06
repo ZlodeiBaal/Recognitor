@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF" 
+    android:orientation="vertical"
+    android:id="@+id/layout1"
+    >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF"
+        android:orientation="horizontal"
+    
+    	android:gravity="center"    
+         android:layout_weight="1" >
+
+        <TextView
+            android:layout_width="wrap_content"  
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"  
+            android:id="@+id/textBoxWas"
+            android:text="Выберите правильную букву"
+            android:textSize="25sp"
+            android:textColor="#000000" />
+       
+    </LinearLayout>
+    
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF"
+        android:orientation="horizontal" 
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+         android:layout_weight="1">
+
+        <Button
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="A"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:onClick="buttonA"
+            />
+        <Button
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:onClick="buttonB"
+            android:text="B"
+            />
+        <Button
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:onClick="buttonC"
+            android:text="C"
+            />
+        <Button
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:onClick="buttonE"
+            android:text="E"
+            />
+        <Button
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:onClick="buttonH"
+            android:text="H"
+            />
+        <Button
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:onClick="buttonK"
+            android:text="K"
+            />
+        <Button
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:text="M"
+            android:onClick="buttonM"
+            />
+        <Button
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:text="O"
+            android:onClick="buttonO"
+            />
+        <Button
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:text="P"
+            android:onClick="buttonP"
+            />
+        <Button
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:text="T"
+            android:onClick="buttonT"
+            />
+        <Button
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:text="X"
+            android:onClick="buttonX"
+            />
+         <Button
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:text="Y"
+            android:onClick="buttonY"
+            />
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF"
+        android:orientation="horizontal" 
+        android:gravity="center"
+         android:layout_weight="1">
+
+        <TextView
+            android:layout_width="wrap_content"  
+            android:layout_height="wrap_content"  
+            android:id="@+id/textBoxWas"
+            android:text="Спасибо, что Вы нас поправили!"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+             android:textColor="#000000" />
+
+    </LinearLayout>
+    
+</LinearLayout>
