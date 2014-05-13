@@ -1,2 +1,2 @@
-���� ���� ��������� ���������� �������� ����������:
+Если кому интересно посмотреть скомпиленное приложение:
 https://play.google.com/store/apps/details?id=org.opencv.samples.tutorial334565
