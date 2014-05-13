@@ -1,0 +1,2 @@
+Если кому интересно посмотреть оригинал приложения:
+https://play.google.com/apps/publish/?dev_acc=06206033049038695259#MarketListingPlace:p=org.opencv.samples.tutorial334565
