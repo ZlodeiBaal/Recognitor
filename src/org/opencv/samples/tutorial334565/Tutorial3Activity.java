@@ -374,6 +374,18 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
 	        {
 	        	DetectedNum = new Mat();
 	        	IsNumDetected=true;
+	        	Rect BiggerRect = new Rect(0,0,0,0);
+	        	BiggerRect.x = Math.max(facesArray[i].x-facesArray[i].width/10,0);
+	        	BiggerRect.y = Math.max(facesArray[i].y-3*facesArray[i].height/20,0);
+	        	if (BiggerRect.x+6*facesArray[i].width/5<temp.width())
+	        		BiggerRect.width = BiggerRect.x+6*facesArray[i].width/5;
+	        	else
+	        		BiggerRect.width = temp.width()-BiggerRect.x-1;
+	        	if (BiggerRect.y+13*facesArray[i].height/10<temp.height())
+	        		BiggerRect.height = BiggerRect.y+13*facesArray[i].height/10;
+	        	else
+	        		BiggerRect.height = temp.height()-BiggerRect.y-1;
+	        	
 	        	DetectedNum = temp.submat(facesArray[i]).clone();
 	        	timetoshow=20;
 	        	Current = facesArray[i];
