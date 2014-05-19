@@ -121,12 +121,14 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
     private int                    mAbsoluteFaceSize   = 0;
     private int timetoshow=0;
     private Rect Current;
-    
+    private boolean LineIsAp;
     private Socket socket;
     private String serverIpAddress = "192.168.0.54";
     private static final int REDIRECTED_SERVERPORT = 10000;
     private int PortFromFile;
-
+	private Point StartSelection;
+	private Point EndSelection;
+	
     static {
         if (!OpenCVLoader.initDebug()) {
             // Handle initialization error
@@ -200,7 +202,7 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
         super.onCreate(savedInstanceState);
         numberansw =null;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+        LineIsAp = false;
         setContentView(R.layout.tutorial3_surface_view);
 
         mOpenCvCameraView = (Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view);
@@ -295,7 +297,7 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
     		}
     		else
     		{
-
+    			
     			mRgba =  inputFrame.rgba();//.copyTo(mRgba);
     			mGray = inputFrame.gray();
     		}
@@ -326,7 +328,18 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
     			tempansw="Connect ...";
     	}else
     		tempansw=null;
-    	
+    	if (LineIsAp)
+    	{
+    		if(StartSelection!=null)
+    			if(EndSelection!=null)
+    			{
+    		Scalar s = new Scalar(3);
+    		s.val[0]=0;
+    		s.val[1]=255;
+    		s.val[2]=0;
+    		Core.line(mRgba, StartSelection, EndSelection, s);
+    			}
+    	}
     	
 
     	Scalar s = new Scalar(3);
@@ -353,7 +366,7 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
         return mRgba;
      //   return inputFrame.rgba();
     }
-    
+    private int TypeOfSelection;
     //Поиск Хааром номера
 	private void haar() {
 		
@@ -363,36 +376,79 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
 
     		Mat temp = new Mat();
     		mGray.copyTo(temp);
-            if (mJavaDetector != null)
-                mJavaDetector.detectMultiScale(temp, faces, 1.1, 10, 5, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                   //     new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
-                		 new Size(70, 21), new Size(500,150));
+    		if (TypeOfSelection==0)
+    		{
+	            if (mJavaDetector != null)
+	                mJavaDetector.detectMultiScale(temp, faces, 1.1, 10, 5, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+	                   //     new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+	                		 new Size(70, 21), new Size(500,150));
+	
+	
+		        Rect[] facesArray = faces.toArray();
+		        for (int i = 0; i < facesArray.length; i++)
+		        {
+		        	/*DetectedNum = new Mat();
+		        	IsNumDetected=true;
+		        	Rect BiggerRect = new Rect(0,0,0,0);
+		        	BiggerRect.x = Math.max(facesArray[i].x-facesArray[i].width/10,0);
+		        	BiggerRect.y = Math.max(facesArray[i].y-3*facesArray[i].height/20,0);
+		        	if (BiggerRect.x+6*facesArray[i].width/5<temp.width())
+		        		BiggerRect.width = 6*facesArray[i].width/5;
+		        	else
+		        		BiggerRect.width = temp.width()-BiggerRect.x-1;
+		        	if (BiggerRect.y+13*facesArray[i].height/10<temp.height())
+		        		BiggerRect.height = 13*facesArray[i].height/10;
+		        	else
+		        		BiggerRect.height = temp.height()-BiggerRect.y-1;
+		        	
+		        	
+		        	DetectedNum = temp.submat(BiggerRect).clone();
+		        	timetoshow=20;
+		        	Current = BiggerRect;*/
+		           
+		        	DetectedNum = new Mat();
+		        	IsNumDetected=true;
 
+		        	//Новая рамка с чуть большими границами
 
-	        Rect[] facesArray = faces.toArray();
-	        for (int i = 0; i < facesArray.length; i++)
-	        {
+		        	int dW=facesArray[i].width/5; // расширяем рамку по X на 20%
+		        	int dH=facesArray[i].height*3/10; //по Y на 30%
+
+		          	int left = Math.max(facesArray[i].x-dW/2,0);
+		               	int top = Math.max(facesArray[i].y-dH/2,0);
+		        	int right = facesArray[i].x+facesArray[i].width+dW/2; if(right>temp.width())right=temp.width()-1;
+		                int bottom = facesArray[i].y+facesArray[i].height+dH/2; if(bottom>temp.height())bottom=temp.height()-1;
+
+		                Rect BiggerRect = new Rect(left,top,right-left,bottom-top);
+		        	//Отправка на сервер данного куска
+		        	DetectedNum = temp.submat(BiggerRect).clone();  
+		        	
+		        	timetoshow=20;
+		        	Current = BiggerRect;
+		            
+		        }
+    		}
+    		else
+    		{
 	        	DetectedNum = new Mat();
 	        	IsNumDetected=true;
-	        	Rect BiggerRect = new Rect(0,0,0,0);
-	        	BiggerRect.x = Math.max(facesArray[i].x-facesArray[i].width/10,0);
-	        	BiggerRect.y = Math.max(facesArray[i].y-3*facesArray[i].height/20,0);
-	        	if (BiggerRect.x+6*facesArray[i].width/5<temp.width())
-	        		BiggerRect.width = BiggerRect.x+6*facesArray[i].width/5;
+    			Rect BiggerRect = new Rect(0,0,0,0);
+    			int hei = (int)(Math.abs(StartSelection.x-EndSelection.x)/6);
+    					
+    			BiggerRect.x = (int)Math.max(StartSelection.x,0);
+	        	BiggerRect.y = (int)Math.max(StartSelection.y-hei,0);
+	        	if (BiggerRect.x+Math.abs(StartSelection.x-EndSelection.x)<temp.width())
+	        		BiggerRect.width = (int)Math.abs(StartSelection.x-EndSelection.x);
 	        	else
 	        		BiggerRect.width = temp.width()-BiggerRect.x-1;
-	        	if (BiggerRect.y+13*facesArray[i].height/10<temp.height())
-	        		BiggerRect.height = BiggerRect.y+13*facesArray[i].height/10;
+	        	if (BiggerRect.y+hei<temp.height())
+	        		BiggerRect.height = 2*hei;
 	        	else
 	        		BiggerRect.height = temp.height()-BiggerRect.y-1;
-	        	
-	        	DetectedNum = temp.submat(facesArray[i]).clone();
+	        	DetectedNum = temp.submat(BiggerRect).clone();
 	        	timetoshow=20;
-	        	Current = facesArray[i];
-	           // Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
-	            
-	        }
-
+	        	Current = BiggerRect;
+    		}
     	}
     	finally {
     	  lock.unlock(); 
@@ -423,13 +479,40 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
 	View curView=null;
 	String FileName="";
 	Boolean busy=false;
+
+	
+	
 	
     @SuppressLint("SimpleDateFormat")
     @Override
     //Сделаем кадр по клику и сохраним его
     public boolean onTouch(View v, MotionEvent event) {
-    	 Run(v);
-        return false;
+    	int eventaction = event.getAction();
+    	//int xOffset = (mOpenCvCameraView.getWidth() - cols) / 2;
+        //int yOffset = (mOpenCvCameraView.getHeight() - rows) / 2;
+    	if (eventaction ==MotionEvent.ACTION_DOWN)
+    	{
+    		StartSelection = new Point((int)event.getX(),(int)event.getY());
+    		LineIsAp=true;
+    	}
+    	else //Отпускаем действие
+    		if (eventaction ==MotionEvent.ACTION_UP)
+        	{
+    			EndSelection = new Point((int)event.getX(),(int)event.getY());
+    			StartSelection.x=StartSelection.x-15;
+    			if ((Math.abs(StartSelection.x-EndSelection.x)<70))//||(Math.abs(StartSelection.y-EndSelection.y)<20))
+    				TypeOfSelection=0;
+    			else
+    				TypeOfSelection=1;
+    	    	Run(v);
+    	    	LineIsAp=false;
+        	}	
+    		else
+    		{
+    			EndSelection = new Point((int)event.getX(),(int)event.getY());
+    		}
+    	 
+        return true;
        
     }
     

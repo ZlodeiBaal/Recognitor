@@ -112,7 +112,8 @@ public class SecondActivity extends Activity{
 	        
 	        if(value.length()<10)
 	        {
-	        	for(int i=0;i<10-value.length();i++)
+	        	int k = 10-value.length();
+	        	for(int i=0;i<k;i++)
 	        		value+=" ";
 	        }
 	        
