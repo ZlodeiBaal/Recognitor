@@ -51,6 +51,7 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener;
+import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.samples.tutorial334565.R;
@@ -64,11 +65,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 //import android.hardware.Camera.Size;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -204,7 +208,6 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         LineIsAp = false;
         setContentView(R.layout.tutorial3_surface_view);
-
         mOpenCvCameraView = (Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view);
 
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
@@ -260,13 +263,56 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.i(TAG, "called onCreateOptionsMenu");
-        mItemSwitchCamera = menu.add("FlipCamera");
+        mItemSwitchCamera = menu.add(0,0,0,"FlipCamera");
+        mItemSwitchCamera = menu.add(0, 1, 1, "LoadImage");
         return true;
     }
+    private String selectedImagePath;
+    int TipeOfImage=0;
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
+                selectedImagePath = getPath(selectedImageUri);
+                TipeOfImage=1;
+                Run((Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view));
+            }
+        }
+    }
 
+    public String getPath(Uri uri) {
+        // just some safety built in 
+        if( uri == null ) {
+            // TODO perform some logging or show user feedback
+            return null;
+        }
+        // try to retrieve the image from the media store first
+        // this will only work for images selected from gallery
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        if( cursor != null ){
+            int column_index = cursor
+            .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        // this is our fallback here
+        return uri.getPath();
+}
+    private static final int SELECT_PICTURE = 1;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	IsFliped=!IsFliped;
+    	int k =item.getItemId();
+    	if (k==0)
+    		IsFliped=!IsFliped;
+    	else
+    	{
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent,
+                    "Select Picture"), SELECT_PICTURE);
+    	}
         return true;
     }
     public void onCameraViewStopped() {
@@ -375,7 +421,15 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
     		MatOfRect faces = new MatOfRect();
 
     		Mat temp = new Mat();
+    		if (TipeOfImage==0)
     		mGray.copyTo(temp);
+    		else
+    		{
+    			Mat temp2 = Highgui.imread(selectedImagePath);
+    			Size sz = new Size(temp2.width()/3,temp2.height()/3);
+    			Imgproc.resize( temp2, temp, sz );
+    		    TipeOfImage=0;
+    		}
     		if (TypeOfSelection==0)
     		{
 	            if (mJavaDetector != null)
