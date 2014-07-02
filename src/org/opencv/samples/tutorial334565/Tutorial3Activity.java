@@ -490,13 +490,13 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
     			int hei = (int)(Math.abs(StartSelection.x-EndSelection.x)/6);
     					
     			BiggerRect.x = (int)Math.max(StartSelection.x,0);
-	        	BiggerRect.y = (int)Math.max(StartSelection.y-hei,0);
+	        	BiggerRect.y = (int)Math.max(Math.min(StartSelection.y,EndSelection.y)-hei,0);
 	        	if (BiggerRect.x+Math.abs(StartSelection.x-EndSelection.x)<temp.width())
 	        		BiggerRect.width = (int)Math.abs(StartSelection.x-EndSelection.x);
 	        	else
 	        		BiggerRect.width = temp.width()-BiggerRect.x-1;
-	        	if (BiggerRect.y+hei<temp.height())
-	        		BiggerRect.height = 2*hei;
+	        	if (BiggerRect.y+Math.abs(StartSelection.y-EndSelection.y)+2*hei<temp.height())
+	        		BiggerRect.height = (int)(2*hei+Math.abs(StartSelection.y-EndSelection.y));
 	        	else
 	        		BiggerRect.height = temp.height()-BiggerRect.y-1;
 	        	DetectedNum = temp.submat(BiggerRect).clone();
@@ -554,10 +554,11 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
         	{
     			EndSelection = new Point((int)event.getX(),(int)event.getY());
     			StartSelection.x=StartSelection.x-15;
-    			if ((Math.abs(StartSelection.x-EndSelection.x)<70))//||(Math.abs(StartSelection.y-EndSelection.y)<20))
+    			if ((Math.abs(StartSelection.x-EndSelection.x)<70)||(Math.abs(StartSelection.y-EndSelection.y)<20))
     				TypeOfSelection=0;
     			else
     				TypeOfSelection=1;
+    			
     	    	Run(v);
     	    	LineIsAp=false;
         	}	
@@ -649,8 +650,14 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
 	    					if(strs.length>2)
 	    					{
 	    						ans=strs[0];
+	    						try {
 	    						timesWas=Integer.parseInt(strs[1]);
 	    						ID=strs[2];
+	    						}
+	    					 catch(Exception ex)
+	    					 {
+	    						 ans = "NOT CONNECT";
+	    					 }
 	    					}
 	    					
 	    					
