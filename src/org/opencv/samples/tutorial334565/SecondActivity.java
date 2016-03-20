@@ -185,7 +185,7 @@ public class SecondActivity extends Activity{
         HttpConnectionParams.setConnectionTimeout(httpParameters, 10 * 1000);
         HttpConnectionParams.setSoTimeout        (httpParameters, 10 * 1000);
         
-        HttpPost httppost = new HttpPost("http://193.138.232.71:10000/swear");
+        HttpPost httppost = new HttpPost("http://212.116.121.70:10000/swear");
          InputStreamEntity reqEntity;
          
          try {
@@ -266,7 +266,7 @@ public class SecondActivity extends Activity{
         HttpConnectionParams.setConnectionTimeout(httpParameters, 10 * 1000);
         HttpConnectionParams.setSoTimeout        (httpParameters, 10 * 1000);
         
-        HttpPost httppost = new HttpPost("http://193.138.232.71:10000/checkplate");
+        HttpPost httppost = new HttpPost("http://212.116.121.70:10000/checkplate");
          InputStreamEntity reqEntity;
          
          try {

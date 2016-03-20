@@ -127,7 +127,7 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
     private Rect Current;
     private boolean LineIsAp;
     private Socket socket;
-    private String serverIpAddress = "192.168.0.54";
+    private String serverIpAddress = "212.116.121.70";
     private static final int REDIRECTED_SERVERPORT = 10000;
     private int PortFromFile;
 	private Point StartSelection;
@@ -554,7 +554,7 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
         	{
     			EndSelection = new Point((int)event.getX(),(int)event.getY());
     			StartSelection.x=StartSelection.x-15;
-    			if ((Math.abs(StartSelection.x-EndSelection.x)<70)||(Math.abs(StartSelection.y-EndSelection.y)<20))
+    			if ((Math.abs(StartSelection.x-EndSelection.x)<70))//||(Math.abs(StartSelection.y-EndSelection.y)<20))
     				TypeOfSelection=0;
     			else
     				TypeOfSelection=1;
@@ -636,7 +636,7 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
 	    	        HttpConnectionParams.setConnectionTimeout(httpParameters, 10 * 1000);
 	    	        HttpConnectionParams.setSoTimeout        (httpParameters, 10 * 1000);
 	    	        
-	    	        HttpPost httppost = new HttpPost("http://193.138.232.71:10000/result");
+	    	        HttpPost httppost = new HttpPost("http://212.116.121.70:10000/result");
 	    	         InputStreamEntity reqEntity;
 	    	        httppost.setEntity(new FileEntity(new File(FileName), "application/octet-stream"));
 	    		    try {
